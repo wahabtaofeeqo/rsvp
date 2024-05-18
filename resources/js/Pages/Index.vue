@@ -6,7 +6,12 @@
                 <div v-if="$page.props.flash.message" class="alert text-white mb-4 font-bold">
                   {{ $page.props.flash.message }}
                 </div>
-              
+
+                <!-- <vueTypedJs :strings="['First text', 'Second Text']">
+                  <h1 class="typing"></h1>
+                </vueTypedJs> -->
+                <!-- <vt text='Hello World! I was registered globally!'></vt> -->
+
                 <div class="flip-card">
                     <div class="flip-card-inner">
                         <div class="flip-card-front rounded">
@@ -83,6 +88,8 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Head, useForm, usePage } from '@inertiajs/vue3';
+// import vt from 'vue-typer';
+// import VueTypedJs from 'vue-typed-js'
 
 const $page: any = usePage();
 
@@ -119,7 +126,7 @@ const submit = () => {
 
 @media screen and (max-width: 600px) {
   .flip-card {
-    width: 350px;
+    width: 330px;
   }
 }
 

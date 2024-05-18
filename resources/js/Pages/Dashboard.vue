@@ -4,14 +4,18 @@
     <AuthenticatedLayout>
         <div class="py-12 px-3">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div className="relative overflow-x-auto">
+                <div v-if="!pagination.data?.length">
+                    <p class="text-center">No body has RSVPed yet</p>
+                </div>
+
+                <div v-else className="relative overflow-x-auto">
                     <table className="w-full text-sm text-left text-gray-500">
                         <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                             <tr>
                                 <th scope="col" className="px-6 py-3">#</th>
                                 <th scope="col" className="px-6 py-3">Name</th>
                                 <th scope="col" className="px-6 py-3">Phone</th>
-                                <th scope="col" className="px-6 py-3">Email</th>
+                                <th scope="col" className="px-6 py-3">Children</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -27,9 +31,9 @@
                     </table>
                 </div>
                 
-                <!-- <div className='px-6 py-3'>
-                    <PageLink links={users.links}></PageLink>
-                </div> -->
+                <div className='px-6 py-3'>
+                    <PageLink :links="models.links"></PageLink>
+                </div>
             </div>
         </div>
     </AuthenticatedLayout>
@@ -39,10 +43,11 @@
 <script setup lang="ts">
 
 defineProps<{
-    models: any[];
+    models: any;
     status?: string;
 }>();
 
+import PageLink from '@/Components/PageLink.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, usePage } from '@inertiajs/vue3';
 import { computed } from 'vue';
