@@ -1,19 +1,53 @@
-<script setup lang="ts">
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head } from '@inertiajs/vue3';
-</script>
-
 <template>
     <Head title="Dashboard" />
 
     <AuthenticatedLayout>
-        <div class="py-12">
+        <div class="py-12 px-3">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6 text-gray-900">You're logged in!</div>
+                <div className="relative overflow-x-auto">
+                    <table className="w-full text-sm text-left text-gray-500">
+                        <thead className="text-xs text-gray-700 uppercase bg-gray-50">
+                            <tr>
+                                <th scope="col" className="px-6 py-3">#</th>
+                                <th scope="col" className="px-6 py-3">Name</th>
+                                <th scope="col" className="px-6 py-3">Phone</th>
+                                <th scope="col" className="px-6 py-3">Email</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr className="bg-white border-b" v-for="(model, index) in pagination.data">
+                                <td className="px-6 py-4">{{ index + 1 }}</td>
+                                <td scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                                    {{model.name}}
+                                </td>
+                                <td className="px-6 py-4"> {{model.phone}} </td>
+                                <td className="px-6 py-4"> {{model.children}} </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Aspernatur quidem optio, doloribus similique numquam harum enim placeat, aut rem aliquid repellat, possimus assumenda blanditiis fuga tenetur adipisci et vitae quasi.
+                
+                <!-- <div className='px-6 py-3'>
+                    <PageLink links={users.links}></PageLink>
+                </div> -->
             </div>
         </div>
     </AuthenticatedLayout>
 </template>
+
+
+<script setup lang="ts">
+
+defineProps<{
+    models: any[];
+    status?: string;
+}>();
+
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import { Head, usePage } from '@inertiajs/vue3';
+import { computed } from 'vue';
+
+const $page = usePage();
+const pagination: any = computed(() => $page.props.models || []);
+
+</script>

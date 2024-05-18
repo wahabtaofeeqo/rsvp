@@ -36,6 +36,7 @@ const submit = () => {
         </div>
 
         <form @submit.prevent="submit">
+            <h4 class="mb-4 font-bold">Welcome Back</h4>
             <div>
                 <InputLabel for="email" value="Email" />
 
@@ -78,7 +79,7 @@ const submit = () => {
                 <Link
                     v-if="canResetPassword"
                     :href="route('password.request')"
-                    class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    class="hidden underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
                     Forgot your password?
                 </Link>

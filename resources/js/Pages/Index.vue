@@ -3,6 +3,10 @@
     <div class="h-screen bg-pink-500">
         <div class="lg:max-w-7xl h-full mx-auto flex items-center justify-center p-3">
             <div class="md:w-1/3 p-3">
+                <div v-if="$page.props.flash.message" class="alert text-white mb-4 font-bold">
+                  {{ $page.props.flash.message }}
+                </div>
+              
                 <div class="flip-card">
                     <div class="flip-card-inner">
                         <div class="flip-card-front rounded">
@@ -13,53 +17,55 @@
                             <h4 class="text-2xl font-bold text-black">Enter your Details</h4>
                             <p class="mb-6 text-sm text-slate-500">Slay the day with Freida is turning 5</p>
                             <div class="mb-4">
-                                <InputLabel for="email" value="Name" />
+                                <InputLabel for="name" value="Name" />
                                 <TextInput
-                                    id="email"
-                                    type="email"
+                                    id="name"
+                                    type="text"
                                     class="mt-1 block w-full"
-                                    v-model="form.email"
+                                    v-model="form.name"
                                     required
                                     autofocus
-                                    autocomplete="username"
                                 />
 
-                                <InputError class="mt-2" :message="form.errors.email" />
+                                <InputError class="mt-2" :message="form.errors.name" />
                             </div>
 
                             <div class="mb-4">
-                                <InputLabel for="email" value="Email" />
+                                <InputLabel for="phone" value="Phone" />
                                 <TextInput
-                                    id="email"
-                                    type="email"
+                                    id="phone"
+                                    type="tel"
                                     class="mt-1 block w-full"
-                                    v-model="form.email"
+                                    v-model="form.phone"
                                     required
-                                    autofocus
-                                    autocomplete="username"
                                 />
 
-                                <InputError class="mt-2" :message="form.errors.email" />
+                                <InputError class="mt-2" :message="form.errors.phone" />
                             </div>
 
-                            <div class="mb-8">
-                                <InputLabel for="email" value="Phone" />
+                            <h4 class="text-black">Your children</h4>
+                            <p class="text-slate-500 text-sm mb-4">Names of those that are coming.</p>
+                            <div class="mb-4">
+                                <!-- <InputLabel for="email" value="Email" /> -->
                                 <TextInput
-                                    id="email"
-                                    type="email"
+                                    v-for="child in form.children"
+                                    type="text"
                                     class="mt-1 block w-full"
-                                    v-model="form.email"
+                                    v-model="child.name"
                                     required
-                                    autofocus
-                                    autocomplete="username"
                                 />
+                                <!-- <InputError class="mt-2" :message="form.errors.email" /> -->
 
-                                <InputError class="mt-2" :message="form.errors.email" />
+                                <div class="mt-6">
+                                  <span style="display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; background-color: red; border-radius: 50%; margin: auto; color: white; cursor: pointer;" @click="addChild()">
+                                    +
+                                  </span>
+                                </div>
                             </div>
 
                             <div class="text-end">
-                                <PrimaryButton class="px-10" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                                    RSVP
+                                <PrimaryButton class="px-16" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                                    {{ form.processing ? 'Please wait...' : 'RSVP' }}
                                 </PrimaryButton>
                             </div>
                           </form>
@@ -76,18 +82,26 @@ import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
-import { Head, useForm } from '@inertiajs/vue3';
+import { Head, useForm, usePage } from '@inertiajs/vue3';
+
+const $page: any = usePage();
 
 const form = useForm({
-    email: '',
-    password: '',
-    remember: false,
+    name: '',
+    phone: '',
+    children: [
+      {name: '' }
+    ]
 });
 
+const addChild = () => {
+  form.children.push({name: ''})
+}
+
 const submit = () => {
-    form.post(route('login'), {
+    form.post(route('rsvp'), {
         onFinish: () => {
-            form.reset('password');
+          form.reset();
         },
     });
 };
@@ -95,9 +109,6 @@ const submit = () => {
 </script>
 
 <style>
-body {
-  font-family: Arial, Helvetica, sans-serif;
-}
 
 .flip-card {
   background-color: transparent;
@@ -127,12 +138,21 @@ body {
   transform: rotateY(180deg);
 }
 
+/* .flip-card:hover .flip-card-inner:not(.no-flip) {
+  transform: rotateY(180deg);
+} */
+
+/* .flip-card .flip-card-inner.no-flip {
+  transform: none;
+} */
+
 .flip-card-front, .flip-card-back {
   position: absolute;
   width: 100%;
   height: 100%;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
+  overflow: auto;
 }
 
 .flip-card-front {
@@ -142,7 +162,7 @@ body {
 
 .flip-card-back {
   background-color: #fff;
-  color: white;
+  /* color: white; */
   transform: rotateY(180deg);
 }
 </style>
