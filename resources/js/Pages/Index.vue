@@ -3,16 +3,24 @@
     <div class="h-screen bg-pink-500">
         <div class="lg:max-w-7xl h-full mx-auto flex items-center justify-center p-3">
             <div class="md:w-1/3 p-3">
-                <div v-if="$page.props.flash.message" class="alert text-white mb-4 font-bold">
-                  {{ $page.props.flash.message }}
-                </div>
-
+        
                 <!-- <vueTypedJs :strings="['First text', 'Second Text']">
                   <h1 class="typing"></h1>
                 </vueTypedJs> -->
                 <!-- <vt text='Hello World! I was registered globally!'></vt> -->
 
-                <div class="flip-card">
+                <div v-if="!isReady" class="text-center px-3">
+                  <h1 class="animate__animated animate__lightSpeedInLeft text-6xl md:text-8xl font-bold text-center text-white">Freida</h1>
+                  <h1 class="animate__animated animate__zoomIn animate__delay-2s text-6xl md:text-8xl font-bold text-center text-white">is</h1>
+                  <h1 class="animate__animated animate__lightSpeedInRight animate__delay-4s text-6xl md:text-8xl font-bold text-center text-white">Five(5)</h1>
+                </div>
+
+                <div v-if="isReady">
+                  <div v-if="$page.props.flash.message" class="alert text-white mb-4 font-bold">
+                    {{ $page.props.flash.message }}
+                  </div>
+                  
+                  <div class="animate__animated animate__heartBeat flip-card">
                     <div class="flip-card-inner">
                         <div class="flip-card-front rounded">
                             <img src="images/banner.jpeg" alt="Avatar" style="width: 100%; height: 100%">
@@ -20,7 +28,7 @@
                         <div class="flip-card-back rounded text-left p-5">
                           <form @submit.prevent="submit">
                             <h4 class="text-2xl font-bold text-black">Enter your Details</h4>
-                            <p class="mb-6 text-sm text-slate-500">Slay the day with Freida is turning 5</p>
+                            <p class="mb-6 text-sm text-slate-500">Slay the day! <strong>Freida</strong> is turning 5</p>
                             <div class="mb-4">
                                 <InputLabel for="name" value="Name" />
                                 <TextInput
@@ -59,7 +67,7 @@
                                     v-model="child.name"
                                     required
                                 />
-                                <!-- <InputError class="mt-2" :message="form.errors.email" /> -->
+                                <InputError class="mt-2" :message="form.errors.children" />
 
                                 <div class="mt-6">
                                   <span style="display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; background-color: red; border-radius: 50%; margin: auto; color: white; cursor: pointer;" @click="addChild()">
@@ -76,7 +84,9 @@
                           </form>
                         </div>
                     </div>
+                  </div>
                 </div>
+                
             </div>
         </div>
     </div>
@@ -88,9 +98,11 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Head, useForm, usePage } from '@inertiajs/vue3';
+import { ref } from 'vue';
 // import vt from 'vue-typer';
 // import VueTypedJs from 'vue-typed-js'
 
+const isReady = ref(false);
 const $page: any = usePage();
 
 const form = useForm({
@@ -110,8 +122,15 @@ const submit = () => {
         onFinish: () => {
           form.reset();
         },
+        onSuccess: () => {
+          form.reset();
+        }
     });
 };
+
+setTimeout(() => {
+  isReady.value = true
+}, 10000);
 
 </script>
 
