@@ -1,3 +1,50 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.nanum-gothic-regular {
+    font-family: "Nanum Gothic", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+  .nanum-gothic-bold {
+    font-family: "Nanum Gothic", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+  }
+  
+  .nanum-gothic-extrabold {
+    font-family: "Nanum Gothic", sans-serif;
+    font-weight: 800;
+    font-style: normal;
+  }
+
+.pacifico-regular {
+    font-family: "Pacifico", cursive;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.bg-pink {
+    background-color: #F4C2C2;
+}
+
+.text-pink {
+    color: #F4C2C2;
+}
+
+.bg-blue {
+    background-color: #B0E0E6;
+}
+  
+.text-blue {
+    color: #B0E0E6;
+}
+
+.bg-cover {
+    background-image: url(/images/bg.JPG);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: bottom left;
+}

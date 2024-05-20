@@ -5,7 +5,10 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+Route::get('/init', 'IndexController@init');
 Route::get('/', 'IndexController@index')->name('index');
+Route::get('/thank-you', 'IndexController@thanks')->name('thanks');
+
 Route::post('/', 'IndexController@store')->name('rsvp');
 
 Route::get('/dashboard', 'IndexController@dashboard')
