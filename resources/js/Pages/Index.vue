@@ -12,7 +12,7 @@
                 <div v-if="!isReady" class="text-center px-3 nanum-gothic-bold">
                   <h1 class="animate__animated animate__lightSpeedInLeft text-6xl md:text-8xl font-bold pacifico-regular text-center text-pink-400">Freida</h1>
                   <h1 class="animate__animated animate__zoomIn animate__delay-2s text-6xl md:text-8xl font-bold text-center text-white">is</h1>
-                  <h1 class="animate__animated animate__lightSpeedInRight animate__delay-4s text-6xl md:text-8xl font-bold text-center text-white">Five(5)</h1>
+                  <h1 class="animate__animated animate__lightSpeedInRight animate__delay-4s text-6xl md:text-8xl font-bold text-center text-white">5</h1>
                 </div>
 
                 <div v-if="isReady">
@@ -44,17 +44,20 @@
                                 <InputError class="mt-2" :message="form.errors.name" />
                             </div>
 
-                            <div class="mb-4">
-                                <InputLabel for="phone" value="Phone" />
+                            <div class="mb-4" style="position: relative;">
+                              <InputLabel for="phone" value="Phone" />
+                              <select v-model="form.code" required style="outline: none; border: 0; position: absolute; top: 24px; background-color: transparent;">
+                                <option value="234">NG</option>
+                                <option value="1">US</option>
+                              </select>
                                 <TextInput
-                                    id="phone"
-                                    type="tel"
-                                    class="mt-1 block w-full"
-                                    v-model="form.phone"
-                                    required
+                                  id="phone"
+                                  type="tel"
+                                  class="mt-1 block w-full pl-20"
+                                  v-model="form.phone"
+                                  required
                                 />
-
-                                <InputError class="mt-2" :message="form.errors.phone" />
+                              <InputError class="mt-2" :message="form.errors.phone" />
                             </div>
 
                             <h4 class="text-black">Your children</h4>
@@ -109,11 +112,12 @@ const isReady = ref(false);
 const $page: any = usePage();
 
 const form = useForm({
-    name: '',
-    phone: '',
-    children: [
-      {name: '' }
-    ]
+  code: '234',
+  name: '',
+  phone: '',
+  children: [
+    {name: '' }
+  ]
 });
 
 const addChild = () => {

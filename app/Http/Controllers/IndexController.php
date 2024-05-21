@@ -25,6 +25,12 @@ class IndexController extends Controller
     }
 
     public function store(Request $request) {
+
+        // Alter phone number
+        $payload = $request->all();
+        $payload['phone'] = $request->code . '' . $request->phone;
+        $request->replace($payload);
+
         $request->validate([
             'name' => 'required|string',
             'phone' => 'required|unique:rspvs',

@@ -44,7 +44,6 @@
 
 .bg-cover {
     background-image: url(/images/bg.JPG);
-    background-size: 100% 100%;
     background-repeat: no-repeat;
-    background-position: bottom left;
+    background-position: bottom center;
 }

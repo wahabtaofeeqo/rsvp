@@ -5,6 +5,7 @@ namespace App\Imports;
 use App\Models\Guest;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Str;
 
 class GuestsImport implements ToModel, WithHeadingRow
 {
@@ -19,6 +20,20 @@ class GuestsImport implements ToModel, WithHeadingRow
         $children = $row['childrens_name'];
         $phoneNumber = $row['phone_number'];
         $numberOfChildren = $row['number_of_children'];
+
+        // If number starts with 1, ignore it
+        if($phoneNumber) {
+            switch (substr($phoneNumber, 0, 1)) {
+                case 0:
+                    $sub = Str::substr($phoneNumber, 1);
+                    $phoneNumber = '234' . $sub;
+                    break;
+                
+                default:
+                    $phoneNumber = '234' . $phoneNumber;
+                    break;
+            }
+        }
 
         return new Guest([
             'family' => $family,
