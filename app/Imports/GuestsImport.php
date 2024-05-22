@@ -6,8 +6,9 @@ use App\Models\Guest;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Str;
+use Maatwebsite\Excel\Concerns\SkipsOnError;
 
-class GuestsImport implements ToModel, WithHeadingRow
+class GuestsImport implements ToModel, WithHeadingRow, SkipsOnError
 {
     /**
     * @param array $row
@@ -35,11 +36,20 @@ class GuestsImport implements ToModel, WithHeadingRow
             }
         }
 
+        //
         return new Guest([
             'family' => $family,
             'children' => $children,
             'phone' => $phoneNumber,
-            'total' => ($numberOfChildren) ? intval($numberOfChildren) : 0
+            'total' => ($numberOfChildren) ? intval($numberOfChildren) : 1
         ]);
+    }
+
+    /**
+     * @param \Throwable $e
+     */
+    public function onError(\Throwable $e)
+    {
+        info($e->getMessage());
     }
 }
