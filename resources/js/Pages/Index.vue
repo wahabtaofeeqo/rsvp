@@ -44,7 +44,7 @@
                                 <InputError class="mt-2" :message="form.errors.name" />
                             </div>
 
-                            <div class="mb-4" style="position: relative;">
+                            <div style="position: relative;">
                               <InputLabel for="phone" value="Phone" />
                               <select v-model="form.code" required style="outline: none; border: 0; position: absolute; top: 24px; background-color: transparent;">
                                 <option value="234">NG</option>
@@ -59,6 +59,7 @@
                                 />
                               <InputError class="mt-2" :message="form.errors.phone" />
                             </div>
+                            <p class="text-sm mb-4 text-slate-500">Enter phone number without Country code and leading Zero</p>
 
                             <h4 class="text-black">Your children</h4>
                             <p class="text-slate-500 text-sm mb-2">Names of those that are coming.</p>
