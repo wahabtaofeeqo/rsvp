@@ -1,6 +1,6 @@
 <template>
     <div v-if="links.length == 3"></div>
-    <div v-else className="flex flex-wrap mt-6 -mb-1">
+    <div v-else className="flex flex-wrap items-center mt-6 -mb-1">
         <div v-for="link in links">
             <Link v-if="link.url" :className=getClasses(link) :href=link.url>
                 <span v-html="link.label"></span>
@@ -8,7 +8,6 @@
             <div v-else :className=getClasses(link) v-html="link.label"></div>
         </div>
     </div>
-
 </template>
 
 <script setup lang="ts">

@@ -27,6 +27,13 @@ class IndexController extends Controller
         return Inertia::render('ThankYou');
     }
 
+    public function myQr($id) {
+        $model = Rsvp::findOrFail($id);
+        return Inertia::render('Qr', [
+            'qr' => $model
+        ]);
+    }
+
     public function store(Request $request) {
 
         // Alter phone number
@@ -68,15 +75,55 @@ class IndexController extends Controller
         ]);
     }
 
+    public function guests() {
+        return Inertia::render('Guests', [
+            'models' => Guest::latest()->paginate(10)
+        ]);
+    }
+
+    public function addGuest(Request $request) {
+
+        $payload = $request->all();
+        $payload['phone'] = $request->code . '' . $request->phone;
+        $request->replace($payload);
+
+        $request->validate([
+            'total' => 'required|integer',
+            'family' => 'required|string',
+            'children' => 'required|string',
+            'phone' => 'required|unique:guests'
+        ]);
+
+        Guest::create($payload);
+
+        //
+        return redirect()->back();
+    }
+
+    
+    public function sendQR() {
+
+        // Select 5 user
+        $users = Rsvp::where('is_sent', 0)->limit(10)->get();
+        foreach ($users as $key => $user) {
+            $this->sendSMS($user);
+        }
+
+        //
+        return redirect()->back();
+    }
+
     private function sendSMS($user) {
 
         $code = str_pad(strval($user->id), 4, "0");
-        $path = public_path('qrcode/' . $user->id);
+        $path = public_path('qrcode');
+
         if(!file_exists($path)) mkdir($path, 0777, true);
 
         $file = $code . ".png";
         $filename = $path . "/" . $file;
-
+        $realPath = "qrcode/" . $code . ".png";
+        
         \QrCode::color(255, 0, 127)->format('png')
             ->size(500)->generate(strval($code), $filename);
 
@@ -84,19 +131,6 @@ class IndexController extends Controller
         $sid = getenv("TWILIO_ACCOUNT_SID");
         $token = getenv("TWILIO_AUTH_TOKEN");
         $twilio = new Client($sid, $token);
- 
-        $body = <<<EOT
-            Hello $user->children
-
-            Thanks for registering 
-            Below is a QR code that will be scanned upon arrival at the venue:
-            
-            ONLY REGISTERED GUESTS WILL BE ALLOWED INTO THE PREMISES 
-            
-            We look forward to welcoming you!
-
-            $filename
-        EOT;
 
          try {
             $message = $twilio->messages->create("whatsapp:+" . $user->phone, // to
@@ -105,7 +139,7 @@ class IndexController extends Controller
                     "from" => "MG018ee670d457100f1e059c498af63ce3",
                     "contentVariables" => json_encode([
                         "1" => $user->children,
-                        "2" => url($filename)
+                        "2" => url('qr/' . $user->id) // url($realPath)
                     ])
                 ]
             );
