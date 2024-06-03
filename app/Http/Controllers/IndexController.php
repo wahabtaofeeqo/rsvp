@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Rsvp;
 use App\Models\Guest;
+use App\Imports\RsvpsExport;
 use App\Imports\GuestsImport;
 use Maatwebsite\Excel\Facades\Excel;
 use Twilio\Rest\Client;
@@ -111,6 +112,10 @@ class IndexController extends Controller
 
         //
         return redirect()->back();
+    }
+
+    public function exportQR() {
+        return Excel::download(new RsvpsExport, 'rsvps.xlsx');
     }
 
     private function sendSMS($user) {

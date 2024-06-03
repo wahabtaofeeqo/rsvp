@@ -10,6 +10,6 @@ class Rsvp extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'phone', 'children'
+        'name', 'phone', 'children', 'code', 'children'
     ];
 }

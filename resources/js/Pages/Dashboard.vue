@@ -4,8 +4,9 @@
     <AuthenticatedLayout>
         <div class="py-12 px-3">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="text-end mb-4">
+                <div class="text-end mb-6">
                     <Link href="/send-qr">Send QR</Link>
+                    <Link href="/export-qr" class="bg-sky-500 rounded ms-3 px-3 py-2 text-white">Export Data</Link>
                 </div>
 
                 <div v-if="!pagination.data?.length">

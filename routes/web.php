@@ -18,7 +18,8 @@ Route::get('/dashboard', 'IndexController@dashboard')
 Route::middleware('auth')->group(function () {
     Route::get('/guests', 'IndexController@guests')->name('guests.list');
     Route::post('/guests', 'IndexController@addGuest')->name('guests.create');
-
+    
+    Route::get('/export-qr', 'IndexController@exportQR');
     Route::get('/send-qr', 'IndexController@sendQR')->name('sendQR');
     
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
