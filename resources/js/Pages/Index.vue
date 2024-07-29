@@ -1,6 +1,7 @@
 <template>
     <Head title="Welcome" />
-    <div class="h-screen" :class="'bg-cover'" style="overflow: hidden;">
+    <div class="h-screen relative" :class="'bg-cover'" style="overflow: hidden;">
+        <div class="overlay"></div>
         <div class="lg:max-w-7xl h-full mx-auto flex items-center justify-center p-3">
             <div class="md:w-1/3 p-3">
         
@@ -9,10 +10,10 @@
                 </vueTypedJs> -->
                 <!-- <vt text='Hello World! I was registered globally!'></vt> -->
 
-                <div v-if="!isReady" class="text-center px-3 nanum-gothic-bold">
-                  <h1 class="animate__animated animate__lightSpeedInLeft text-6xl md:text-8xl font-bold pacifico-regular text-center text-pink-400">Freida</h1>
-                  <h1 class="animate__animated animate__zoomIn animate__delay-2s text-6xl md:text-8xl font-bold text-center text-white">is</h1>
-                  <h1 class="animate__animated animate__lightSpeedInRight animate__delay-4s text-6xl md:text-8xl font-bold text-center text-white">5</h1>
+                <div v-if="!isReady" class="text-center px-3 nanum-gothic-bold hidden">
+                  <h1 class="animate__animated animate__lightSpeedInLeft text-6xl md:text-8xl font-bold pacifico-regular text-center text-pink-400">Deji</h1>
+                  <h1 class="animate__animated animate__zoomIn animate__delay-2s text-6xl md:text-8xl font-bold text-center text-white">@</h1>
+                  <h1 class="animate__animated animate__lightSpeedInRight animate__delay-4s text-6xl md:text-8xl font-bold text-center text-white">40</h1>
                 </div>
 
                 <div v-if="isReady">
@@ -20,16 +21,16 @@
                     {{ $page.props.flash.message }}
                   </div>
                   
-                  <h4 class="mb-4 text-pink-500 font-bold">Click the image to continue!</h4>
+                  <h4 class="mb-4 text-white font-bold">Click the image to continue!</h4>
                   <div class="animate__animated animate__heartBeat flip-card">
                     <div class="flip-card-inner">
                         <div class="flip-card-front rounded">
-                            <img src="images/banner.jpeg" alt="Avatar" style="width: 100%; height: 100%">
+                            <img src="images/cover.jpeg" alt="Avatar" style="width: 100%; height: 100%">
                         </div>
                         <div class="flip-card-back rounded text-left p-5">
                           <form @submit.prevent="submit">
                             <h4 class="text-2xl font-bold text-pink-600">Enter your Details</h4>
-                            <p class="mb-6 text-sm text-slate-500 pacifico-regular">Slay the day! <strong>Freida</strong> is turning 5</p>
+                            <p class="mb-6 text-sm text-slate-500 pacifico-regular">Let's celebrate <strong>Deji</strong> @40</p>
                             <div class="mb-4">
                                 <InputLabel for="name" value="Name" />
                                 <TextInput
@@ -61,10 +62,9 @@
                             </div>
                             <p class="text-sm mb-4 text-slate-500">Enter phone number without Country code and leading Zero</p>
 
-                            <h4 class="text-black">Your children</h4>
-                            <p class="text-slate-500 text-sm mb-2">Names of those that are coming.</p>
-                            <div class="mb-4">
-                                <!-- <InputLabel for="email" value="Email" /> -->
+                            <!-- <h4 class="text-black hidden">Your children</h4>
+                            <p class="text-slate-500 text-sm mb-2 hidden">Names of those that are coming.</p>
+                            <div class="mb-4 hidden">
                                 <div class="flex items-center gap-3" v-for="(child, index) in form.children"> 
                                   <TextInput
                                     type="text"
@@ -81,7 +81,7 @@
                                     +
                                   </span>
                                 </div>
-                            </div>
+                            </div> -->
 
                             <div class="text-end">
                                 <PrimaryButton class="px-16 bg-pink-600 hover:bg-pink-700" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
@@ -116,13 +116,11 @@ const form = useForm({
   code: '234',
   name: '',
   phone: '',
-  children: [
-    {name: '' }
-  ]
+  children: []
 });
 
 const addChild = () => {
-  form.children.push({name: ''})
+  // form.children.push({name: ''})
 }
 
 const remove = (index: number) => {
@@ -132,7 +130,7 @@ const remove = (index: number) => {
 const submit = () => {
     form.post(route('rsvp'), {
         onFinish: () => {
-          // form.reset();
+          form.reset();
         },
         onSuccess: () => {
           form.reset();

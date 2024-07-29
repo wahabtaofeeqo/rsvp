@@ -44,18 +44,18 @@ class IndexController extends Controller
 
         $request->validate([
             'name' => 'required|string',
-            'children' => 'required|array',
-            'children.*.name' => 'required|string',
-            'phone' => 'required|exists:guests|unique:rsvps'
+            // 'children' => 'required|array',
+            // 'children.*.name' => 'required|string',
+            'phone' => 'required|unique:rsvps'
         ]);
         
         $guest = Guest::where('phone', $request->phone)->first();
-        if(count($request->children) > $guest->total) {
-            return redirect()->back()->withErrors(['children' => ['You can only enter max of ' . $guest->total . ' children']]);
-        }
+        // if(count($request->children) > $guest->total) {
+        //     return redirect()->back()->withErrors(['children' => ['You can only enter max of ' . $guest->total . ' children']]);
+        // }
 
-        $payload = $request->all();
         $children = '';
+        $payload = $request->all();
         foreach ($request->children as $key => $value) {
            $children = $children . $value['name'] . ', ';
         }
