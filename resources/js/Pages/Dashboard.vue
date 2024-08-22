@@ -5,7 +5,7 @@
         <div class="py-12 px-3">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="text-end mb-6">
-                    <Link href="/send-qr">Send QR</Link>
+                    <button v-on:click="sendQr()">Send QR</button>
                     <a href="/export-qr" class="bg-sky-500 rounded ms-3 px-3 py-2 text-white">Export Data</a>
                 </div>
 
@@ -24,8 +24,9 @@
                                 <th scope="col" className="px-6 py-3">#</th>
                                 <th scope="col" className="px-6 py-3">Name</th>
                                 <th scope="col" className="px-6 py-3">Phone</th>
-                                <th scope="col" className="px-6 py-3">Children</th>
+                                <!-- <th scope="col" className="px-6 py-3">Children</th> -->
                                 <th scope="col" className="px-6 py-3">QR Status</th>
+                                <th scope="col" className="px-6 py-3">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -35,8 +36,14 @@
                                     {{model.name}}
                                 </td>
                                 <td className="px-6 py-4"> {{model.phone}} </td>
-                                <td className="px-6 py-4"> {{model.children}} </td>
+                                <!-- <td className="px-6 py-4"> {{model.children}} </td> -->
                                 <td className="px-6 py-4"> {{parseInt(model.is_sent) ? 'Sent' : 'Not Sent'}} </td>
+                                <td class="px-6 py-4">
+                                    <!-- <Checkbox onchange="onChecked(model)" /> -->
+                                     <input type="checkbox" 
+                                        v-bind:checked="isChecked(model.id)" v-on:change="onChecked(model)">
+                                    <!-- <Checkbox na v-model="model.checked"></Checkbox> -->
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -58,12 +65,40 @@
 //     status?: string;
 // }>();
 
+import Checkbox from '@/Components/Checkbox.vue';
 import PageLink from '@/Components/PageLink.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head, Link, usePage } from '@inertiajs/vue3';
-import { computed } from 'vue';
+import { Head, Link, router, usePage } from '@inertiajs/vue3';
+import { computed, ref } from 'vue';
 
 const $page: any = usePage();
+const selectedUsers: any = ref([]);
 const pagination: any = computed(() => $page.props.models || []);
+
+const isChecked = (id: any) => {
+    return selectedUsers.value.find((item: any) => item == id)
+}
+
+const onChecked = (model: any) => {
+    let users: any[] = selectedUsers.value;
+    let index = users.findIndex(item => item == model.id);
+    if(index == -1) {
+        selectedUsers.value.push(model.id);
+    }
+    else {
+        selectedUsers.value.splice(index, 1);
+    }
+}
+
+const sendQr = () => {
+    let IDs: any[] = selectedUsers.value;
+    if(IDs.length) {
+        router.post(route('sendQR'), {ids: IDs}, {
+            onSuccess: () => {
+                selectedUsers.value = [];
+            }
+        })
+    }
+}
 
 </script>

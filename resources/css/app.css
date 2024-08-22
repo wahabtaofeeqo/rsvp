@@ -45,8 +45,11 @@
 .bg-cover {
     background-image: url(/images/deji.jpeg);
     background-repeat: no-repeat;
-    background-size: 100% 100%;
+    background-size: contain;
     background-position: center;
+    background-color: #000000;
+    /* background-size: 100% 100%; */
+    /* background-position: center; */
     /* background-color: #F4C2C2; */
 }
 

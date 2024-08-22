@@ -6,12 +6,14 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Rsvp;
 use App\Models\Guest;
+use App\Mail\Rsvped;
 use App\Exports\RsvpsExport;
 use App\Imports\GuestsImport;
 use Maatwebsite\Excel\Facades\Excel;
 use Twilio\Rest\Client;
 use Illuminate\Support\Facades\Storage;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Mail;
 
 class IndexController extends Controller
 {
@@ -44,6 +46,7 @@ class IndexController extends Controller
 
         $request->validate([
             'name' => 'required|string',
+            'email' => 'required|unique:rsvps',
             // 'children' => 'required|array',
             // 'children.*.name' => 'required|string',
             'phone' => 'required|unique:rsvps'
@@ -64,7 +67,13 @@ class IndexController extends Controller
         $model = Rsvp::create($payload);
 
         // SMS
-        $this->sendSMS($model);
+        // $this->sendSMS($model);
+        try {
+            Mail::to($model)->send(new Rsvped($model));
+        } 
+        catch (\Throwable $e) {
+            // info($e->getMessage());
+        }
 
         //
         return redirect()->route('thanks')->with('message', 'Thank you for RSVP-ing');
@@ -102,14 +111,19 @@ class IndexController extends Controller
     }
 
     
-    public function sendQR() {
+    public function sendQR(Request $request) {
 
-        // Select 5 user
-        $users = Rsvp::where('is_sent', 0)->limit(10)->get();
-        foreach ($users as $key => $user) {
-            $this->sendSMS($user);
+        $IDs = $request->ids ?? [];
+        foreach ($IDs as $key => $id) {
+            $this->sendSMS(Rsvp::find($id));
         }
 
+        // Select 5 user
+        // $users = Rsvp::where('is_sent', 0)->limit(10)->get();
+        // foreach ($users as $key => $user) {
+        //     $this->sendSMS($user);
+        // } 
+ 
         //
         return redirect()->back();
     }

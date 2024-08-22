@@ -20,7 +20,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/guests', 'IndexController@addGuest')->name('guests.create');
     
     Route::get('/export-qr', 'IndexController@exportQR');
-    Route::get('/send-qr', 'IndexController@sendQR')->name('sendQR');
+    Route::post('/send-qr', 'IndexController@sendQR')->name('sendQR');
     
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

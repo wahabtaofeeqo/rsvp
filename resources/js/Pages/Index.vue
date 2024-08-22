@@ -60,7 +60,21 @@
                                 />
                               <InputError class="mt-2" :message="form.errors.phone" />
                             </div>
-                            <p class="text-sm mb-4 text-slate-500">Enter phone number without Country code and leading Zero</p>
+                            <p class="text-sm mb-4 text-slate-500 mb-4">Enter phone number without Country code and leading Zero</p>
+
+                            <div class="mb-4">
+                                <InputLabel for="email" value="Email" />
+                                <TextInput
+                                    id="email"
+                                    type="text"
+                                    class="mt-1 block w-full"
+                                    v-model="form.email"
+                                    required
+                                    autofocus
+                                />
+
+                                <InputError class="mt-2" :message="form.errors.email" />
+                            </div>
 
                             <!-- <h4 class="text-black hidden">Your children</h4>
                             <p class="text-slate-500 text-sm mb-2 hidden">Names of those that are coming.</p>
@@ -116,6 +130,7 @@ const form = useForm({
   code: '234',
   name: '',
   phone: '',
+  email: '',
   children: []
 });
 
