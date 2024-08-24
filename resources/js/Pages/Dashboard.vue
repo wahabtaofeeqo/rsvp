@@ -41,7 +41,7 @@
                                 <td class="px-6 py-4">
                                     <!-- <Checkbox onchange="onChecked(model)" /> -->
                                      <input type="checkbox" 
-                                        v-bind:checked="isChecked(model.id)" v-on:change="onChecked(model)">
+                                        :checked="isChecked(model.id)" v-on:change="onChecked(model)">
                                     <!-- <Checkbox na v-model="model.checked"></Checkbox> -->
                                 </td>
                             </tr>
@@ -76,14 +76,17 @@ const selectedUsers: any = ref([]);
 const pagination: any = computed(() => $page.props.models || []);
 
 const isChecked = (id: any) => {
-    return selectedUsers.value.find((item: any) => item == id)
+    return selectedUsers.value.findIndex((item: any) => item == id) != -1;
 }
 
 const onChecked = (model: any) => {
     let users: any[] = selectedUsers.value;
     let index = users.findIndex(item => item == model.id);
     if(index == -1) {
-        selectedUsers.value.push(model.id);
+        if(users.length >= 5) {
+            alert('Select only 5 persons at a time to send SMS to')
+        }
+        else selectedUsers.value.push(model.id);
     }
     else {
         selectedUsers.value.splice(index, 1);

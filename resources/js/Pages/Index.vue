@@ -20,12 +20,12 @@
                   <div v-if="$page.props.flash.message" class="alert text-white mb-4 font-bold">
                     {{ $page.props.flash.message }}
                   </div>
-                  
-                  <h4 class="mb-4 text-white font-bold">Click the image to continue!</h4>
+
+                  <h4 class="text-white font-bold text-start m-3">Click the image to continue!</h4>
                   <div class="animate__animated animate__heartBeat flip-card">
                     <div class="flip-card-inner">
-                        <div class="flip-card-front rounded">
-                            <img src="images/cover.jpeg" alt="Avatar" style="width: 100%; height: 100%">
+                        <div class="flip-card-front rounded flex items-center">
+                            <img src="/images/cover.png" alt="Avatar">
                         </div>
                         <div class="flip-card-back rounded text-left p-5">
                           <form @submit.prevent="submit">
@@ -50,6 +50,7 @@
                               <select v-model="form.code" required style="outline: none; border: 0; position: absolute; top: 24px; background-color: transparent;">
                                 <option value="234">NG</option>
                                 <option value="1">US</option>
+                                <option value="44">UK</option>
                               </select>
                                 <TextInput
                                   id="phone"
@@ -155,7 +156,7 @@ const submit = () => {
 
 setTimeout(() => {
   isReady.value = true
-}, 10000);
+}, 3000);
 
 </script>
 
@@ -207,8 +208,13 @@ setTimeout(() => {
 }
 
 .flip-card-front {
-  background-color: #bbb;
-  color: black;
+  background-color: #333;
+  /* color: black;  */
+  /* background-image: url(/images/cover.png); 
+  background-size: contain; 
+  background-position: center; 
+  background-repeat: no-repeat;  */
+  /* background-color: #000 */
 }
 
 .flip-card-back {

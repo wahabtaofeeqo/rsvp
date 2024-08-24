@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Rsvp;
 use App\Models\Guest;
+use App\Mail\QrMail;
 use App\Mail\Rsvped;
 use App\Exports\RsvpsExport;
 use App\Imports\GuestsImport;
@@ -139,35 +140,48 @@ class IndexController extends Controller
 
         if(!file_exists($path)) mkdir($path, 0777, true);
 
-        $file = $code . ".png";
-        $filename = $path . "/" . $file;
-        $realPath = "qrcode/" . $code . ".png";
-        
-        \QrCode::color(255, 0, 127)->format('png')
-            ->size(500)->generate(strval($code), $filename);
+        try {
 
-        //
-        $sid = getenv("TWILIO_ACCOUNT_SID");
-        $token = getenv("TWILIO_AUTH_TOKEN");
-        $twilio = new Client($sid, $token);
+            $file = $code . ".png";
+            $filename = $path . "/" . $file;
+            $realPath = "qrcode/" . $code . ".png";
+            
+            \QrCode::color(255, 0, 127)->format('png')
+                ->size(500)->generate(strval($code), $filename);
 
-         try {
+            //
+            $sid = getenv("TWILIO_ACCOUNT_SID");
+            $token = getenv("TWILIO_AUTH_TOKEN");
+            $twilio = new Client($sid, $token);
+
             $message = $twilio->messages->create("whatsapp:+" . $user->phone, // to
                 [
                     "contentSid" => "HXccc9d797a991507afb0ff15b461632b2",
                     "from" => "MG018ee670d457100f1e059c498af63ce3",
                     "contentVariables" => json_encode([
-                        "1" => $user->children,
-                        "2" => url('qr/' . $user->id) // url($realPath)
+                        "1" => "Guest",
+                        "2" => url('qrcode/' . $code . '.png') // url($realPath)
                     ])
                 ]
             );
-
+            
             $user->code = $code;
             $user->is_sent = true;
             $user->save();
+
+            //
+            $this->sendEmail($user);
         } 
         catch (\Exception $e) {
+            info($e->getMessage());
+        }
+    }
+
+    private function sendEmail($user) {
+        try {
+            Mail::to($user)->send(new QrMail($user));
+        } 
+        catch (\Throwable $e) {
             info($e->getMessage());
         }
     }
